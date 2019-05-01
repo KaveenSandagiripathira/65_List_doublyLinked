@@ -7,15 +7,12 @@ public class UserOfList {
 		System.out.println(list);
 		list.add(0, "S");
 		System.out.println(list);
-		list.add(1, "t");
+		list.add(1, "T");
+		list.add(2, "U");
+		list.add(3, "Y");
 		System.out.println(list);
-		list.add(2, "u");
-		System.out.println(list);
-		list.add(3, "y");
-		System.out.println(list);
-		list.add(2, "d");
-		System.out.println(list);
-		list.remove(1);
+		list.remove(3);
+		list.remove(0);
 		System.out.println(list);
 	}
 

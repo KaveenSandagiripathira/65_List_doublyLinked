@@ -3,28 +3,31 @@
  */
 
 public class List_inChainOfNodes{
-    private Node headSentinel;
+    private Node mainSentinel;
 
      
     /**
       Construct an empty list
      */
     public List_inChainOfNodes() {
-        headSentinel = new Node( null, null);
-    }
+        mainSentinel = new Node( null );
+		mainSentinel.setNextNode(mainSentinel); 
+		//Seperate for a reason
+		mainSentinel.setPreviousNode(mainSentinel);
+		}
 
     /**
       @return the number of elements in this list
      */
     public int size() {
         // recursive approach seems more perspicuous
-        return size( headSentinel);
+        return size( mainSentinel);
     }
 
     // recursively-called helper
     private int size( Node startingAt) {
         Node next = startingAt.getNextNode();
-        if( next == null) return 0;
+        if( next == mainSentinel) return 0; //EXCEPTION IS MAIN SENTINEL
         else return 1+ size( next);
     }
 	
@@ -40,8 +43,8 @@ public class List_inChainOfNodes{
     public String toString() {
         String stringRep = "tail-first [";
 
-        for( Node node = getNode(size() - 1)
-			;node != null && node.getPreviousNode() != null
+        for( Node node = mainSentinel.getPreviousNode()
+			;node != mainSentinel
 			;node = node.getPreviousNode()
            )
             stringRep += node.getCargo() + "`";
@@ -54,9 +57,10 @@ public class List_inChainOfNodes{
       @return true, in keeping with conventions yet to be discussed
      */
      public boolean addAsHead( Object val) {
-        headSentinel.setNextNode(
-          new Node( val, headSentinel.getNextNode(), headSentinel ));
-        return true;
+		 Node newNode = new Node (val,mainSentinel.getNextNode(),mainSentinel);
+		 mainSentinel.setNextNode(newNode);
+		 mainSentinel.setPreviousNode(getNode(size()-1));
+		 return true;
      }
 
 
@@ -70,7 +74,7 @@ public class List_inChainOfNodes{
            
         Node node;
         int upTo;  // comma operator precludes declaration in FOR
-        for( upTo = 0   , node = headSentinel
+        for( upTo = 0   , node = mainSentinel
            ; upTo < index
            ; upTo++     , node = node.getNextNode()
            )
@@ -122,8 +126,7 @@ public class List_inChainOfNodes{
 		Node after  = before.getNextNode();
 		Node newNode = new Node( value, after, before);
 		before.setNextNode(newNode);
-		if (after != null)
-			after.setPreviousNode(newNode);
+		after.setPreviousNode(newNode);
         return true;
     }
 
@@ -142,8 +145,7 @@ public class List_inChainOfNodes{
 		Node after = ax.getNextNode();
         Object saveForReturn = ax.getCargo();
 		before.setNextNode(after);
-		if (after != null)
-			after.setPreviousNode(before);
+		after.setPreviousNode(before);
         return saveForReturn;
     }
 }
